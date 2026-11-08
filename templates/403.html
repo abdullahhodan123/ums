@@ -1,13 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %}Access denied — {{ SITE_NAME }}{% endblock %}
+{% block title %}Access denied &mdash; {{ SITE_NAME }}{% endblock %}
+
+{% block meta_description %}You do not have permission to view this page on the {{ SITE_NAME }} website.{% endblock %}
 
 {% block content %}
+
 <section class="page-header">
     <div class="container page-header__inner">
         <span class="eyebrow">Error 403</span>
+        <p class="error-code" aria-hidden="true">403</p>
         <h1>Access denied</h1>
-        <p class="page-header__lead">You do not have permission to view this page. If you believe this is a mistake, please contact the registrar.</p>
+        <p class="page-header__lead">
+            You do not have permission to view this page. If you believe this is
+            a mistake, please contact the registrar.
+        </p>
         <div class="cta-band__actions">
             <a class="btn btn--accent" href="{% url 'core:home' %}">Back to Home</a>
             <a class="btn btn--ghost-light" href="{% url 'core:contact' %}">Contact the university</a>
@@ -16,13 +23,72 @@
 </section>
 
 <section class="section">
-    <div class="container prose">
-        <h2>Where to go instead</h2>
-        <ul>
-            <li><a href="{% url 'notice:notice_list' %}">Public notices</a></li>
-            <li><a href="{% url 'core:academics' %}">Academics and programs</a></li>
-            <li><a href="{% url 'core:admission' %}">Admission and fees</a></li>
+    <div class="container">
+        <div class="section__head">
+            <span class="eyebrow">Public pages</span>
+            <h2 class="section__title">Where to go instead</h2>
+            <p class="section__lead">
+                These sections are open to every visitor and need no account.
+            </p>
+        </div>
+
+        <ul class="quicklinks">
+            <li>
+                <a class="quicklink" href="{% url 'notice:notice_list' %}">
+                    <span class="quicklink__text">
+                        <span class="quicklink__label">Public notices</span>
+                        <span class="quicklink__sub">Examinations, admissions and campus news</span>
+                    </span>
+                    <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+            <li>
+                <a class="quicklink" href="{% url 'core:academics' %}">
+                    <span class="quicklink__text">
+                        <span class="quicklink__label">Academics</span>
+                        <span class="quicklink__sub">Programmes and faculties</span>
+                    </span>
+                    <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+            <li>
+                <a class="quicklink" href="{% url 'core:admission' %}">
+                    <span class="quicklink__text">
+                        <span class="quicklink__label">Admission</span>
+                        <span class="quicklink__sub">Deadlines, eligibility and fees</span>
+                    </span>
+                    <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+            <li>
+                <a class="quicklink" href="{% url 'core:contact' %}">
+                    <span class="quicklink__text">
+                        <span class="quicklink__label">Contact</span>
+                        <span class="quicklink__sub">Address, helpline and office hours</span>
+                    </span>
+                    <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+            <li>
+                <a class="quicklink" href="{% url 'core:research' %}">
+                    <span class="quicklink__text">
+                        <span class="quicklink__label">Research</span>
+                        <span class="quicklink__sub">Centres, funding and partnerships</span>
+                    </span>
+                    <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+            <li>
+                <a class="quicklink" href="{% url 'core:students' %}">
+                    <span class="quicklink__text">
+                        <span class="quicklink__label">Students</span>
+                        <span class="quicklink__sub">Library, housing and career services</span>
+                    </span>
+                    <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
         </ul>
     </div>
 </section>
+
 {% endblock %}

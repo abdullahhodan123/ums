@@ -1,39 +1,43 @@
 /* ==========================================================================
-   Jholo University - main stylesheet
+   Lakshmipur Science and Technology - main stylesheet
     Order: tokens -> reset -> base -> layout -> components -> dev page
          -> utilities -> responsive
-   Every colour, font and spacing value resolves to a token, so a rebrand is
-   a change to :root only.
-   ========================================================================== */
+    Every colour, font and spacing value resolves to a token, so a rebrand is
+    a change to :root only.
+    ========================================================================== */
 
 /* --------------------------------------------------------------------------
    1. Design tokens
    -------------------------------------------------------------------------- */
 :root {
     /* Brand */
-    --color-primary: #0f2b46;
-    --color-primary-dark: #0a1f33;
-    --color-primary-light: #1d4a75;
-    --color-accent: #c9a227;
-    --color-accent-dark: #a8851c;
-    --color-accent-light: #e6c766;
+    --color-primary: #102b5c;
+    --color-primary-dark: #091a42;
+    --color-primary-light: #244b85;
+    --color-accent: #e2a72e;
+    --color-accent-dark: #78530c;
+    --color-accent-light: #f5d477;
+    --color-accent-rgb: 226, 167, 46;
 
     /* Neutrals */
-    --color-ink: #16202b;
-    --color-body: #46566a;
-    --color-muted: #6b7c90;
-    --color-border: #dfe6ee;
+    --color-ink: #17243a;
+    --color-body: #405168;
+    --color-muted: #62758d;
+    --color-border: #dce5ef;
     --color-bg: #ffffff;
-    --color-bg-alt: #f5f8fb;
-    --color-bg-dark: #0f2b46;
+    --color-bg-alt: #f4f7fc;
+    --color-bg-dark: #102b5c;
 
     /* Status */
     --color-success: #1c7a4a;
     --color-danger: #b3261e;
 
-    /* Typography */
-    --font-heading: Georgia, 'Times New Roman', serif;
-    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    /* Typography
+       Headings run in a serif with a proper optical size axis, body in a
+       neutral grotesque. Both stacks fall back to the same system fonts the
+       site used before, so a blocked CDN costs nothing but the webfont. */
+    --font-heading: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
                  'Helvetica Neue', Arial, sans-serif;
 
     --fs-xs: 0.75rem;
@@ -45,8 +49,16 @@
     --fs-2xl: 2.25rem;
     --fs-3xl: 3rem;
 
-    --lh-tight: 1.2;
+    /* Fluid heading scale: one clamp per level, so every heading on the site
+       steps down smoothly instead of snapping at each breakpoint. */
+    --fs-h1: clamp(2.1rem, 1.4rem + 2.6vw, 3.25rem);
+    --fs-h2: clamp(1.6rem, 1.25rem + 1.4vw, 2.35rem);
+    --fs-h3: clamp(1.3rem, 1.15rem + 0.6vw, 1.75rem);
+    --fs-h4: clamp(1.1rem, 1rem + 0.35vw, 1.35rem);
+
+    --lh-tight: 1.18;
     --lh-base: 1.65;
+    --tracking-tight: -0.02em;
 
     /* Spacing scale */
     --space-1: 0.25rem;
@@ -63,9 +75,10 @@
     --radius-sm: 4px;
     --radius: 8px;
     --radius-lg: 16px;
-    --shadow-sm: 0 1px 2px rgba(15, 43, 70, 0.08);
-    --shadow: 0 4px 16px rgba(15, 43, 70, 0.10);
-    --shadow-lg: 0 12px 32px rgba(15, 43, 70, 0.16);
+    --shadow-sm: 0 1px 2px rgba(16, 43, 92, 0.08);
+    --shadow: 0 4px 16px rgba(16, 43, 92, 0.10);
+    --shadow-md: 0 8px 24px rgba(16, 43, 92, 0.13);
+    --shadow-lg: 0 12px 32px rgba(16, 43, 92, 0.16);
 
     /* Layout */
     --container-width: 1200px;
@@ -146,16 +159,18 @@ h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     font-weight: 700;
     line-height: var(--lh-tight);
+    letter-spacing: var(--tracking-tight);
     color: var(--color-ink);
+    text-wrap: balance;
     /* Long single words (programme names, notice titles) must never force the
        page sideways on a narrow screen. */
     overflow-wrap: break-word;
 }
 
-h1 { font-size: var(--fs-3xl); }
-h2 { font-size: var(--fs-2xl); }
-h3 { font-size: var(--fs-xl); }
-h4 { font-size: var(--fs-lg); }
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+h4 { font-size: var(--fs-h4); }
 
 p {
     margin-bottom: var(--space-4);
@@ -163,7 +178,7 @@ p {
 }
 
 :focus-visible {
-    outline: 3px solid var(--color-accent);
+    outline: 3px solid var(--color-accent-dark);
     outline-offset: 2px;
 }
 
@@ -238,23 +253,41 @@ p {
 .section__lead {
     color: var(--color-muted);
     font-size: var(--fs-md);
+    line-height: 1.7;
 }
 
 .section--dark .section__lead {
     color: rgba(255, 255, 255, 0.7);
 }
 
+/*
+  Eyebrow: a short uppercase label sitting above every section title. The gold
+  rule in front of it is the one decorative mark repeated across the site, so
+  headings read as a set rather than as isolated lines of type.
+*/
 .eyebrow {
-    display: block;
-    margin-bottom: var(--space-2);
-    font-size: var(--fs-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-accent-dark);
 }
 
-.section--dark .eyebrow {
+.eyebrow::before {
+    flex-shrink: 0;
+    width: 26px;
+    height: 2px;
+    background-color: var(--color-accent);
+    content: '';
+}
+
+.section--dark .eyebrow,
+.page-header .eyebrow {
     color: var(--color-accent-light);
 }
 
@@ -313,9 +346,9 @@ p {
     inset: 0;
     z-index: 1;
     background: linear-gradient(90deg,
-        rgba(10, 31, 51, 0.88) 0%,
-        rgba(15, 43, 70, 0.72) 52%,
-        rgba(15, 43, 70, 0.38) 100%);
+        rgba(10, 31, 51, 0.6) 0%,
+        rgba(15, 43, 70, 0.4) 52%,
+        rgba(15, 43, 70, 0.18) 100%);
     content: '';
 }
 
@@ -329,6 +362,10 @@ p {
 
 .hero__content {
     max-width: 780px;
+}
+
+.hero .eyebrow {
+    color: var(--color-accent-light);
 }
 
 .hero__title {
@@ -396,7 +433,6 @@ p {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: brightness(1.12) saturate(0.5) contrast(0.58);
 }
 
 .hero__dots {
@@ -428,7 +464,7 @@ p {
 
 .hero__dot.is-active {
     background: var(--color-accent);
-    box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.18);
+    box-shadow: 0 0 0 4px rgba(var(--color-accent-rgb), 0.18);
     transform: scale(1.1);
 }
 
@@ -453,6 +489,107 @@ p {
     border-radius: var(--radius);
     background: #101820;
     box-shadow: var(--shadow-md);
+}
+
+/* Announcement card: the standing state of the banner until a film file is
+   added to static/videos. Reads as a notice pulled to the top of the page. */
+.announcement-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    width: min(100%, 64rem);
+    margin-inline: auto;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--color-accent);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    color: var(--color-ink);
+    transition: transform var(--transition), box-shadow var(--transition),
+                border-color var(--transition);
+}
+
+.announcement-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-lg);
+    color: var(--color-ink);
+}
+
+.announcement-card__date {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 88px;
+    padding: var(--space-3) var(--space-2);
+    background-color: var(--color-bg-alt);
+    border-radius: var(--radius);
+    text-align: center;
+}
+
+.announcement-card__day {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-primary);
+}
+
+.announcement-card__month {
+    margin-top: 0.35rem;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+}
+
+.announcement-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 0;
+}
+
+.announcement-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--fs-sm);
+    color: var(--color-muted);
+}
+
+.announcement-card__title {
+    font-family: var(--font-heading);
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+}
+
+.announcement-card__text {
+    display: block;
+    font-size: var(--fs-sm);
+    line-height: 1.65;
+    color: var(--color-muted);
+}
+
+.announcement-card__cta {
+    flex-shrink: 0;
+    margin-left: auto;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--color-primary);
+}
+
+.announcement-card:hover .announcement-card__cta {
+    color: var(--color-accent-dark);
 }
 
 .announcement-video {
@@ -504,7 +641,7 @@ p {
 }
 
 .quicklink:hover .quicklink__icon {
-    background-color: rgba(201, 162, 39, 0.16);
+    background-color: rgba(var(--color-accent-rgb), 0.16);
     color: var(--color-accent-dark);
 }
 
@@ -572,7 +709,7 @@ p {
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background-color: rgba(201, 162, 39, 0.2);
+    background-color: rgba(var(--color-accent-rgb), 0.2);
     box-shadow: inset 0 0 0 2px var(--color-accent);
 }
 
@@ -751,7 +888,7 @@ p {
 .program-card .card__media {
     flex: none;
     background-image:
-        radial-gradient(circle at 30% 20%, rgba(201, 162, 39, 0.22), transparent 60%),
+        radial-gradient(circle at 30% 20%, rgba(var(--color-accent-rgb), 0.22), transparent 60%),
         linear-gradient(140deg, var(--color-primary-light), var(--color-primary-dark));
 }
 
@@ -974,7 +1111,7 @@ p {
     gap: var(--space-3);
     margin-bottom: var(--space-5);
     padding: var(--space-3) var(--space-4);
-    background-color: rgba(201, 162, 39, 0.1);
+    background-color: rgba(var(--color-accent-rgb), 0.1);
     border-left: 3px solid var(--color-accent);
     border-radius: var(--radius-sm);
     font-size: var(--fs-sm);
@@ -1033,21 +1170,50 @@ p {
 
 /* --- Empty state --- */
 .empty-state {
-    padding: var(--space-8) var(--space-5);
+    padding: clamp(2.5rem, 5vw, 4rem) var(--space-5);
     text-align: center;
-    background-color: var(--color-bg-alt);
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-accent);
     border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
 }
 
 .empty-state h2 {
-    margin-bottom: var(--space-2);
-    font-size: var(--fs-xl);
+    margin-bottom: var(--space-3);
+    font-size: var(--fs-h3);
 }
 
 .empty-state p {
-    max-width: 46ch;
+    max-width: 50ch;
     margin: 0 auto var(--space-5);
     color: var(--color-muted);
+    line-height: 1.7;
+}
+
+/* Small status pill used on placeholder and status blocks */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+    padding: 0.35rem 0.85rem;
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-dark);
+    background-color: rgba(var(--color-accent-rgb), 0.14);
+    border-radius: 999px;
+}
+
+.status-pill::before {
+    width: 7px;
+    height: 7px;
+    background-color: var(--color-accent);
+    border-radius: 50%;
+    content: '';
 }
 
 /* --- Notice detail --- */
@@ -1172,7 +1338,7 @@ a.notice-nav__item:hover {
    still reads as a card before the JPEG arrives. */
 .news-card .card__media {
     background-image:
-        radial-gradient(circle at 70% 25%, rgba(201, 162, 39, 0.28), transparent 60%),
+        radial-gradient(circle at 70% 25%, rgba(var(--color-accent-rgb), 0.28), transparent 60%),
         linear-gradient(140deg, var(--color-primary-light), var(--color-primary-dark));
 }
 
@@ -1308,7 +1474,7 @@ a.notice-nav__item:hover {
 }
 
 .carousel__dot:hover {
-    background-color: rgba(201, 162, 39, 0.4);
+    background-color: rgba(var(--color-accent-rgb), 0.4);
 }
 
 .carousel__dot[aria-current='true'] {
@@ -1343,7 +1509,7 @@ a.notice-nav__item:hover {
     object-position: 50% 22%;
     background-color: var(--color-bg-alt);
     box-shadow: 0 0 0 3px var(--color-bg),
-                0 0 0 4px rgba(201, 162, 39, 0.45);
+                0 0 0 4px rgba(var(--color-accent-rgb), 0.45);
 }
 
 .leader-card__id {
@@ -1802,9 +1968,27 @@ a.notice-nav__item:hover {
     position: sticky;
     top: 0;
     z-index: 100;
-    background-color: var(--color-bg);
+    background-color: rgba(255, 255, 255, 0.96);
+    backdrop-filter: saturate(1.6) blur(8px);
     border-bottom: 1px solid var(--color-border);
     transition: box-shadow var(--transition);
+}
+
+/* The gold rule is what makes the bar read as a masthead rather than a
+   toolbar. It sits under the border so it never moves when the bar lifts. */
+.header::after {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+        var(--color-primary) 0%,
+        var(--color-primary) 42%,
+        var(--color-accent) 78%,
+        var(--color-accent-light) 100%);
+    content: '';
+    pointer-events: none;
 }
 
 .header.is-stuck {
@@ -1823,7 +2007,7 @@ a.notice-nav__item:hover {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 0.5rem;
+    gap: 0.75rem;
     height: 100%;
     margin-left: 0;
     margin-right: auto;
@@ -1834,8 +2018,8 @@ a.notice-nav__item:hover {
 .brand__mark {
     display: grid;
     place-items: center;
-    height: 100px;
-    min-width: 100px;
+    height: 64px;
+    min-width: 64px;
     padding: 0;
     flex-shrink: 0;
     overflow: hidden;
@@ -1845,8 +2029,8 @@ a.notice-nav__item:hover {
 
 .brand__mark img {
     display: block;
-    width: 100px;
-    height: 100px;
+    width: 64px;
+    height: 64px;
     object-fit: contain;
 }
 
@@ -1861,15 +2045,23 @@ a.notice-nav__item:hover {
     writing-mode: horizontal-tb;
 }
 
+/* Header only: the hairline divider and the breathing room between the
+   crest and the wordmark. The footer stacks its brand and stays as it was. */
+.header .brand__text {
+    gap: 0.2rem;
+    padding-left: 0.75rem;
+    border-left: 1px solid var(--color-border);
+}
+
 .brand__name {
     display: block;
     font-family: var(--font-heading);
-    font-size: 1.2rem;
+    font-size: clamp(1.05rem, 1.35vw, 1.2rem);
     font-weight: 700;
     color: var(--color-ink);
     white-space: normal;
     word-break: normal;
-    line-height: 1.1;
+    line-height: 1.15;
     letter-spacing: -0.02em;
     writing-mode: horizontal-tb;
     transform: none;
@@ -1877,11 +2069,18 @@ a.notice-nav__item:hover {
 
 .brand__tagline {
     display: none;
-    font-size: 0.56rem;
+    font-size: 0.72rem;
+    font-weight: 500;
     color: var(--color-muted);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     white-space: nowrap;
     line-height: 1.1;
+}
+
+/* The header masthead shows its tagline; the footer stays name-only. */
+.header .brand__tagline {
+    display: block;
 }
 
 /* --- Navigation --- */
@@ -1996,7 +2195,7 @@ a.notice-nav__item:hover {
 }
 
 .subnav .nav__link.is-active {
-    background-color: rgba(201, 162, 39, 0.1);
+    background-color: rgba(var(--color-accent-rgb), 0.1);
     color: var(--color-primary);
     font-weight: 600;
 }
@@ -2101,7 +2300,7 @@ a.notice-nav__item:hover {
 }
 
 .meta__dot::before {
-    content: '•';
+    content: 'â€¢';
     margin-right: var(--space-3);
     color: var(--color-border);
 }
@@ -2110,7 +2309,7 @@ a.notice-nav__item:hover {
 .tag {
     display: inline-block;
     padding: 0.2rem 0.65rem;
-    background-color: rgba(201, 162, 39, 0.14);
+    background-color: rgba(var(--color-accent-rgb), 0.14);
     color: var(--color-accent-dark);
     border-radius: 999px;
     font-size: var(--fs-xs);
@@ -2148,33 +2347,58 @@ a.notice-nav__item:hover {
 /* --- Page header banner --- */
 .page-header {
     position: relative;
-    padding-block: var(--space-9);
+    padding-block: clamp(3rem, 6vw, 5rem);
     background-color: var(--color-primary);
+    /* Two layers: the gradient carries the text, the site grid sits on top of
+       it at low opacity so the banner matches the hero rather than reading as
+       a flat block of colour. */
     background-image:
         linear-gradient(135deg,
             rgba(10, 31, 51, 0.94) 0%,
-            rgba(15, 43, 70, 0.82) 55%,
-            rgba(29, 74, 117, 0.72) 100%);
+            rgba(15, 43, 70, 0.84) 55%,
+            rgba(29, 74, 117, 0.74) 100%),
+        url('../img/hero-pattern.svg');
+    background-size: cover, 640px auto;
+    background-position: center, center;
     color: #fff;
     text-align: center;
     overflow: hidden;
+    box-shadow: inset 0 -3px 0 var(--color-accent);
 }
 
 .page-header__inner {
     position: relative;
     z-index: 1;
-    max-width: 760px;
+    max-width: 780px;
     margin-inline: auto;
 }
 
 .page-header h1 {
     color: #fff;
+    text-wrap: balance;
+}
+
+.page-header .eyebrow {
+    justify-content: center;
 }
 
 .page-header__lead {
     margin-top: var(--space-4);
     font-size: var(--fs-md);
+    line-height: 1.7;
     color: rgba(255, 255, 255, 0.8);
+}
+
+/* Ghosted status number on the error banners. Decorative: the heading and
+   the eyebrow already carry the same value to assistive technology. */
+.error-code {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-heading);
+    font-size: clamp(3.25rem, 11vw, 6rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+    color: rgba(255, 255, 255, 0.22);
 }
 
 /* --- Breadcrumbs --- */
@@ -2182,9 +2406,13 @@ a.notice-nav__item:hover {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
     gap: var(--space-2);
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-5);
+    font-family: var(--font-body);
     font-size: var(--fs-sm);
+    font-weight: 500;
+    letter-spacing: 0.04em;
     color: rgba(255, 255, 255, 0.7);
 }
 
@@ -2208,14 +2436,19 @@ a.notice-nav__item:hover {
 
 /* --- CTA band --- */
 .cta-band {
+    position: relative;
     padding-block: var(--space-8);
     background-color: var(--color-bg-dark);
     background-image:
         linear-gradient(120deg,
             rgba(10, 31, 51, 0.95) 0%,
-            rgba(29, 74, 117, 0.85) 100%);
+            rgba(29, 74, 117, 0.85) 100%),
+        url('../img/hero-pattern.svg');
+    background-size: cover, 640px auto;
+    background-position: center, center;
     color: #fff;
     text-align: center;
+    box-shadow: inset 0 3px 0 var(--color-accent);
 }
 
 .cta-band__title {
@@ -2630,7 +2863,10 @@ a.notice-nav__item:hover {
   header and purely decorative - which is what buys the panel menu enough room.
 */
 @media (max-width: 1199px) {
-    .brand__tagline {
+    /* The header gives up its tagline first: it is the widest decorative part
+       of the masthead, and the panel menu needs the room. The footer keeps
+       its tagline at every width. */
+    .header .brand__tagline {
         display: none;
     }
 
@@ -2802,10 +3038,6 @@ a.notice-nav__item:hover {
 
 /* Mobile: single column everywhere */
 @media (max-width: 768px) {
-    h1 { font-size: var(--fs-2xl); }
-    h2 { font-size: var(--fs-xl); }
-    h3 { font-size: var(--fs-lg); }
-
     .hero__inner {
         min-height: 36rem;
     }
@@ -2857,6 +3089,17 @@ a.notice-nav__item:hover {
     .section__head--row {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    /* Date plate above the text instead of beside it */
+    .announcement-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-4);
+    }
+
+    .announcement-card__cta {
+        margin-left: 0;
     }
 
     .section {
@@ -2990,12 +3233,9 @@ a.notice-nav__item:hover {
     }
 }
 
-/* Phones at 320-420px: headings and vertical rhythm tighten a further step */
+/* Phones at 320-420px: vertical rhythm tightens a further step. Headings are
+   left to the fluid scale - they have already reached their minimum there. */
 @media (max-width: 480px) {
-    h1 { font-size: var(--fs-xl); }
-    h2 { font-size: var(--fs-lg); }
-    h3 { font-size: var(--fs-md); }
-
     .hero__title {
         font-size: clamp(1.75rem, 8vw, 2.25rem);
     }
@@ -3099,6 +3339,7 @@ a.notice-nav__item:hover {
     .page-header {
         padding-block: 0 0 var(--space-5);
         background: none;
+        box-shadow: none;
         color: #000;
         text-align: left;
     }
@@ -3107,7 +3348,8 @@ a.notice-nav__item:hover {
     .page-header__lead,
     .breadcrumb a,
     .breadcrumb__current,
-    .eyebrow {
+    .eyebrow,
+    .error-code {
         color: #000;
     }
 
@@ -3119,6 +3361,7 @@ a.notice-nav__item:hover {
     .section--dark,
     .cta-band {
         background: none;
+        box-shadow: none;
         color: #000;
     }
 }

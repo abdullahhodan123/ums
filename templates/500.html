@@ -1,29 +1,67 @@
 {% extends "base.html" %}
 
-{% block title %}Page not found — {{ SITE_NAME }}{% endblock %}
+{% block title %}Server error &mdash; {{ SITE_NAME }}{% endblock %}
+
+{% block meta_description %}Something went wrong while loading this page on the {{ SITE_NAME }} website.{% endblock %}
 
 {% block content %}
+
 <section class="page-header">
     <div class="container page-header__inner">
-        <span class="eyebrow">Error 404</span>
-        <h1>Page not found</h1>
-        <p class="page-header__lead">The page you are looking for has moved or no longer exists.</p>
+        <span class="eyebrow">Error 500</span>
+        <p class="error-code" aria-hidden="true">500</p>
+        <h1>Something went wrong</h1>
+        <p class="page-header__lead">
+            The problem has been recorded and the team is looking into it.
+            Please try again in a moment, or use one of the links below.
+        </p>
         <div class="cta-band__actions">
             <a class="btn btn--accent" href="{% url 'core:home' %}">Back to Home</a>
-            <a class="btn btn--ghost-light" href="{% url 'notice:notice_list' %}">Browse Notices</a>
+            <a class="btn btn--ghost-light" href="{% url 'core:contact' %}">Report a problem</a>
         </div>
     </div>
 </section>
 
 <section class="section">
-    <div class="container prose">
-        <h2>Try one of these instead</h2>
-        <ul>
-            <li><a href="{% url 'core:about' %}">About Lakshmipur Science and Technology</a></li>
-            <li><a href="{% url 'core:academics' %}">Academics and programs</a></li>
-            <li><a href="{% url 'core:admission' %}">Admission and fees</a></li>
-            <li><a href="{% url 'core:contact' %}">Contact the university</a></li>
+    <div class="container">
+        <div class="section__head">
+            <span class="eyebrow">While you wait</span>
+            <h2 class="section__title">Sections that are still working</h2>
+            <p class="section__lead">
+                These pages are served independently and are usually unaffected.
+            </p>
+        </div>
+
+        <ul class="quicklinks">
+            <li>
+                <a class="quicklink" href="{% url 'core:home' %}">
+                    <span class="quicklink__text">
+                        <span class="quicklink__label">Homepage</span>
+                        <span class="quicklink__sub">Programmes, campus and latest updates</span>
+                    </span>
+                    <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+            <li>
+                <a class="quicklink" href="{% url 'notice:notice_list' %}">
+                    <span class="quicklink__text">
+                        <span class="quicklink__label">Notice board</span>
+                        <span class="quicklink__sub">Official announcements and downloads</span>
+                    </span>
+                    <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+            <li>
+                <a class="quicklink" href="{% url 'core:contact' %}">
+                    <span class="quicklink__text">
+                        <span class="quicklink__label">Contact</span>
+                        <span class="quicklink__sub">Reach the university office directly</span>
+                    </span>
+                    <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
         </ul>
     </div>
 </section>
+
 {% endblock %}

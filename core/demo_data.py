@@ -309,7 +309,7 @@ VICE_CHANCELLOR = {
     'role': 'Vice-Chancellor',
     'office': None,
     'portrait': 'img/vice-chancellor.jpg',
-    'alt': 'Portrait of the Vice-Chancellor of Jholo University',
+    'alt': 'Portrait of the Vice-Chancellor of the university',
 
     # Short form, for the carousel slide.
     'message': (
@@ -395,14 +395,14 @@ LEADERS = [
         'role': 'Chancellor',
         'office': "President of the People's Republic of Bangladesh",
         'portrait': 'img/chancellor.jpg',
-        'alt': 'Portrait of the Chancellor of Jholo University',
+        'alt': 'Portrait of the Chancellor of the university',
         'message': (
-            'It is a privilege to serve as Chancellor of Jholo University, and the '
+            'It is a privilege to serve as Chancellor of this university, and the '
             'office carries a plain responsibility: that the institution remains '
             'answerable to the students who study within these walls and to the '
             'communities that surround it. A university earns its standing slowly, '
             'in classrooms, laboratories and clinics rather than in announcements. '
-            'The founding conviction of Jholo has been that a student should be '
+            'The founding conviction has been that a student should be '
             'known by the teachers who teach them, and that a degree should mean '
             'something to those who later employ its holder. That conviction has '
             'not changed as we have grown, and it will not change in the decades '
@@ -427,7 +427,7 @@ LEADERS = [
             'capacity in science, health and technology is either secured or '
             'allowed to slip. A university is finally judged by ordinary '
             'measures - classrooms filled, degrees examined honestly, research '
-            'that leaves the campus - and those are the measures Jholo University '
+            'that leaves the campus - and those are the measures this university '
             'ought to be asked about, by students and by the country alike.'
         ),
     },

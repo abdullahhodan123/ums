@@ -9,6 +9,7 @@ The homepage currently reads from core/demo_data.py. In Phase 4 the Notice
 query replaces the notices lookup - one line changes, the template does not.
 """
 
+from django.contrib.staticfiles import finders
 from django.views.generic import TemplateView
 
 from notice.models import Notice
@@ -21,8 +22,13 @@ from . import demo_data
 PENDING_SECTIONS = {
     'about': (
         'About',
-        'Our history, leadership, governance and the people who make Jholo '
-        'University what it is.',
+        'Our history, leadership, governance and the people who make the '
+        'university what it is.',
+    ),
+    'administration': (
+        'Administration',
+        'The Vice-Chancellor\u2019s office, the Senate and the departments '
+        'that keep the university running.',
     ),
     'academics': (
         'Academics',
@@ -65,6 +71,13 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        # The homepage banner plays a video when the file has been dropped
+        # into static/videos. Until then it falls back to a card that points
+        # at the notice board, so the section never shows a dead player.
+        context['has_announcement_video'] = (
+            finders.find('videos/special-announcement.mp4') is not None
+        )
 
         context.update({
             'quick_links': demo_data.QUICK_LINKS,

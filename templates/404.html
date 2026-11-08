@@ -1,13 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %}Page not found — {{ SITE_NAME }}{% endblock %}
+{% block title %}Page not found &mdash; {{ SITE_NAME }}{% endblock %}
+
+{% block meta_description %}The page you were looking for does not exist on the {{ SITE_NAME }} website.{% endblock %}
 
 {% block content %}
+
 <section class="page-header">
     <div class="container page-header__inner">
         <span class="eyebrow">Error 404</span>
+        <p class="error-code" aria-hidden="true">404</p>
         <h1>Page not found</h1>
-        <p class="page-header__lead">The page you are looking for has moved or no longer exists.</p>
+        <p class="page-header__lead">
+            The address may have changed, or the page may have been removed.
+            Nothing is broken &mdash; try one of the sections below instead.
+        </p>
         <div class="cta-band__actions">
             <a class="btn btn--accent" href="{% url 'core:home' %}">Back to Home</a>
             <a class="btn btn--ghost-light" href="{% url 'notice:notice_list' %}">Browse Notices</a>
@@ -16,14 +23,72 @@
 </section>
 
 <section class="section">
-    <div class="container prose">
-        <h2>Try one of these instead</h2>
-        <ul>
-            <li><a href="{% url 'core:about' %}">About Lakshmipur Science and Technology</a></li>
-            <li><a href="{% url 'core:academics' %}">Academics and programs</a></li>
-            <li><a href="{% url 'core:admission' %}">Admission and fees</a></li>
-            <li><a href="{% url 'core:contact' %}">Contact the university</a></li>
+    <div class="container">
+        <div class="section__head">
+            <span class="eyebrow">Still open</span>
+            <h2 class="section__title">Try one of these instead</h2>
+            <p class="section__lead">
+                The most visited sections of the site, all published and up to date.
+            </p>
+        </div>
+
+        <ul class="quicklinks">
+            <li>
+                <a class="quicklink" href="{% url 'core:about' %}">
+                    <span class="quicklink__text">
+                        <span class="quicklink__label">About {{ SITE_SHORT_NAME }}</span>
+                        <span class="quicklink__sub">History, leadership and governance</span>
+                    </span>
+                    <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+            <li>
+                <a class="quicklink" href="{% url 'core:academics' %}">
+                    <span class="quicklink__text">
+                        <span class="quicklink__label">Academics</span>
+                        <span class="quicklink__sub">Programmes across six faculties</span>
+                    </span>
+                    <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+            <li>
+                <a class="quicklink" href="{% url 'core:admission' %}">
+                    <span class="quicklink__text">
+                        <span class="quicklink__label">Admission</span>
+                        <span class="quicklink__sub">Deadlines, eligibility and fees</span>
+                    </span>
+                    <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+            <li>
+                <a class="quicklink" href="{% url 'notice:notice_list' %}">
+                    <span class="quicklink__text">
+                        <span class="quicklink__label">Notice board</span>
+                        <span class="quicklink__sub">Examinations and announcements</span>
+                    </span>
+                    <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+            <li>
+                <a class="quicklink" href="{% url 'core:research' %}">
+                    <span class="quicklink__text">
+                        <span class="quicklink__label">Research</span>
+                        <span class="quicklink__sub">Centres, funding and partnerships</span>
+                    </span>
+                    <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+            <li>
+                <a class="quicklink" href="{% url 'core:contact' %}">
+                    <span class="quicklink__text">
+                        <span class="quicklink__label">Contact</span>
+                        <span class="quicklink__sub">Campus address and helpline</span>
+                    </span>
+                    <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
         </ul>
     </div>
 </section>
+
 {% endblock %}

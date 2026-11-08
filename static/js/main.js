@@ -1,5 +1,5 @@
 /**
- * Jholo University - site behaviour
+ * Lakshmipur Science and Technology - site behaviour
  *
  * Vanilla JS, no dependencies, no build step. Loaded with `defer`.
  *

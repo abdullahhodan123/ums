@@ -32,6 +32,7 @@ core.views.PENDING_SECTIONS.
 <section class="section">
     <div class="container">
         <div class="empty-state">
+            <p class="status-pill">In progress</p>
             <h2>This section is still being built</h2>
             <p>
                 We are writing this part of the site now. Nothing is broken -
@@ -68,6 +69,15 @@ core.views.PENDING_SECTIONS.
                     <span class="quicklink__text">
                         <span class="quicklink__label">Notice board</span>
                         <span class="quicklink__sub">Examinations, admissions and campus notices</span>
+                    </span>
+                    <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+            <li>
+                <a class="quicklink" href="{% url 'core:vice_chancellor' %}">
+                    <span class="quicklink__text">
+                        <span class="quicklink__label">Vice-Chancellor</span>
+                        <span class="quicklink__sub">Message from the head of the university</span>
                     </span>
                     <span class="quicklink__arrow" aria-hidden="true">&rsaquo;</span>
                 </a>

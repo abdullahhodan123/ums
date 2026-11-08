@@ -84,9 +84,9 @@ def site_info(request):
     return {
         'SITE_NAME': 'Lakshmipur Science and Technology',
         'SITE_SHORT_NAME': 'Lakshmipur Science and Technology',
-        'SITE_TAGLINE': '',
+        'SITE_TAGLINE': 'Excellence in Science & Technology',
         'SITE_PHONE': '+880 1700 000000',
-        'SITE_EMAIL': 'info@jholouniversity.edu',
+        'SITE_EMAIL': 'info@lst.ac.bd',
         'SITE_ADDRESS': 'Lakshmipur Science and Technology, University Road, Lakshmipur',
         'SITE_NAV': SITE_NAV,
     }

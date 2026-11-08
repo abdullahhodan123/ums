@@ -3,7 +3,7 @@
 
 {% block title %}{{ SITE_NAME }} — {{ SITE_TAGLINE }}{% endblock %}
 
-{% block meta_description %}Jholo University is a modern institution offering 38 degree programmes across six faculties, with a focus on teaching quality, research and graduate outcomes.{% endblock %}
+{% block meta_description %}{{ SITE_NAME }} is a modern institution offering 38 degree programmes across six faculties, with a focus on teaching quality, research and graduate outcomes.{% endblock %}
 
 {% comment %}
 Order is deliberate: hook the visitor, offer shortcuts, build credibility,
@@ -18,19 +18,19 @@ then the three content feeds, then numbers, then a final push.
         <div class="hero__slides">
             <div class="hero__slide-track">
                 <figure class="hero__slide">
-                    <img src="{% static 'img/hero1.png' %}" alt="University campus view, image 1" width="1600" height="900">
+                    <img src="{% static 'img/hero.png' %}" alt="University campus building surrounded by palms and gardens" width="1983" height="793">
                 </figure>
                 <figure class="hero__slide">
-                    <img src="{% static 'img/hero2.png' %}" alt="University campus view, image 2" width="1600" height="900">
+                    <img src="{% static 'img/hero1.png' %}" alt="Students working in a university computer lab" width="768" height="341">
                 </figure>
                 <figure class="hero__slide">
-                    <img src="{% static 'img/hero3.png' %}" alt="University campus view, image 3" width="1600" height="900">
+                    <img src="{% static 'img/hero2.png' %}" alt="Students conducting research in a university laboratory" width="768" height="341">
                 </figure>
                 <figure class="hero__slide">
-                    <img src="{% static 'img/hero4.png' %}" alt="University campus view, image 4" width="1600" height="900">
+                    <img src="{% static 'img/hero3.png' %}" alt="Tree-lined path on the university campus" width="768" height="342">
                 </figure>
                 <figure class="hero__slide">
-                    <img src="{% static 'img/hero.png' %}" alt="University campus view, image 5" width="1600" height="900">
+                    <img src="{% static 'img/hero4.png' %}" alt="Students playing cricket on the university field" width="768" height="342">
                 </figure>
             </div>
         </div>
@@ -46,7 +46,7 @@ then the three content feeds, then numbers, then a final push.
 
     <div class="container hero__inner">
         <div class="hero__content">
-           
+            <p class="eyebrow">{{ SITE_TAGLINE }}</p>
 
             <h1 class="hero__title">Where curiosity becomes capability</h1>
 
@@ -56,14 +56,7 @@ then the three content feeds, then numbers, then a final push.
             </p>
 
             <div class="hero__actions">
-                
                 <a class="btn btn--ghost-light" href="{% url 'core:academics' %}">Explore Programs</a>
-            </div>
-
-            <!-- <ul class="hero__facts">
-                <li><strong>0</strong> degree programmes</li>
-                <li><strong>5</strong> faculties</li>
-                <li><strong>0</strong> research centres</li> -->
             </div>
         </div>
     </div>
@@ -158,33 +151,80 @@ then the three content feeds, then numbers, then a final push.
 </section>
 
 {# ---------------------------------------------- 3. Special announcement #}
+{% comment %}
+  Plays the announcement film when static/videos/special-announcement.mp4 has
+  been added. Until then the same slot carries a card pointing at the notice
+  board, so the section is never an empty player.
+{% endcomment %}
 <section class="section section--alt announcement-section">
     <div class="container">
-        <div class="section__head">
-            <span class="eyebrow">Announcement</span>
-            <h2 class="section__title">Special Announcement</h2>
+        <div class="section__head section__head--row">
+            <div>
+                <span class="eyebrow">Announcement</span>
+                <h2 class="section__title">Special Announcement</h2>
+                <p class="section__lead">
+                    Circulars from the university office, published in full on
+                    the notice board.
+                </p>
+            </div>
+            <a class="btn btn--outline" href="{% url 'notice:notice_list' %}">All announcements</a>
         </div>
 
-        <div class="announcement-video-wrap">
-            <video class="announcement-video"
-                   controls
-                   playsinline
-                   preload="metadata"
-                   poster="{% static 'img/hero.png' %}"
-                   width="1280"
-                   height="720">
-                <source src="{% static 'videos/special-announcement.mp4' %}" type="video/mp4">
-                Your browser does not support HTML video.
-            </video>
-        </div>
+        {% if has_announcement_video %}
+            <div class="announcement-video-wrap">
+                <video class="announcement-video"
+                       controls
+                       playsinline
+                       preload="metadata"
+                       poster="{% static 'img/hero.png' %}"
+                       width="1280"
+                       height="720">
+                    <source src="{% static 'videos/special-announcement.mp4' %}" type="video/mp4">
+                    Your browser does not support HTML video.
+                </video>
+            </div>
+        {% elif notices %}
+            <a class="announcement-card" href="{{ notices.0.get_absolute_url }}">
+                <span class="announcement-card__date">
+                    <span class="announcement-card__day">{{ notices.0.published_date|date:"d" }}</span>
+                    <span class="announcement-card__month">{{ notices.0.published_date|date:"M Y" }}</span>
+                </span>
+                <span class="announcement-card__body">
+                    <span class="announcement-card__meta">
+                        <span class="tag tag--accent">{{ notices.0.category.name }}</span>
+                        {% if notices.0.reference_code %}
+                            <span class="meta__dot">{{ notices.0.reference_code }}</span>
+                        {% endif %}
+                    </span>
+                    <span class="announcement-card__title">{{ notices.0.title }}</span>
+                    <span class="announcement-card__text">{{ notices.0.description|truncatechars:180 }}</span>
+                </span>
+                <span class="announcement-card__cta" aria-hidden="true">
+                    Read the full notice &rsaquo;
+                </span>
+            </a>
+        {% else %}
+            <a class="announcement-card" href="{% url 'notice:notice_list' %}">
+                <span class="announcement-card__body">
+                    <span class="announcement-card__title">All announcements are published on the notice board</span>
+                    <span class="announcement-card__text">
+                        Examinations, admissions, careers and campus circulars
+                        appear there the moment they are issued.
+                    </span>
+                </span>
+                <span class="announcement-card__cta" aria-hidden="true">
+                    Open the notice board &rsaquo;
+                </span>
+            </a>
+        {% endif %}
     </div>
 </section>
 
-{# ---------------------------------------------------------- 3. About Jholo #}
+{# ---------------------------------------------------------- 3. About the university #}
 <section class="section">
     <div class="container split">
         <div class="split__body">
-            <span class="eyebrow">About the Lakshmipur Science and Technology</span>
+            <span class="eyebrow">About the university</span>
             <h2 class="section__title">Built for teaching first</h2>
 
             <p>
