@@ -2045,12 +2045,11 @@ a.notice-nav__item:hover {
     writing-mode: horizontal-tb;
 }
 
-/* Header only: the hairline divider and the breathing room between the
-   crest and the wordmark. The footer stacks its brand and stays as it was. */
+/* Header only: the breathing room between the crest and the wordmark. The
+   footer stacks its brand and stays as it was. */
 .header .brand__text {
     gap: 0.2rem;
     padding-left: 0.75rem;
-    border-left: 1px solid var(--color-border);
 }
 
 .brand__name {
@@ -2245,6 +2244,174 @@ a.notice-nav__item:hover {
 
 .nav-toggle[aria-expanded='true'] .nav-toggle__bar:nth-child(3) {
     transform: translateY(-7px) rotate(-45deg);
+}
+
+/* --- Notice ticker --- */
+/* Sits directly under the header's gold rule, so it reads as the masthead's
+   news band. It is not sticky: the header already owns the top of the screen
+   and a second pinned strip would eat a third of a phone's viewport. */
+.ticker {
+    background-color: var(--color-primary-dark);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: var(--fs-sm);
+}
+
+.ticker__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    min-height: 44px;
+    padding-block: var(--space-2);
+}
+
+.ticker__label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-shrink: 0;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background-color: var(--color-accent);
+    color: var(--color-primary-dark);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.ticker__pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--color-primary-dark);
+    animation: ticker-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes ticker-pulse {
+    50% { opacity: 0.35; }
+}
+
+.ticker__viewport {
+    flex: 1 1 auto;
+    min-width: 0;
+    /* Without JavaScript the strip is a plain sideways scroller. main.js
+       switches this to hidden once the seamless loop is built. */
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.ticker__viewport::-webkit-scrollbar {
+    display: none;
+}
+
+.ticker__track,
+.ticker__group {
+    display: flex;
+    align-items: center;
+    width: max-content;
+}
+
+.ticker.is-ready .ticker__viewport {
+    overflow: hidden;
+}
+
+.ticker.is-ready .ticker__track {
+    animation: ticker-scroll var(--ticker-duration, 45s) linear infinite;
+    will-change: transform;
+}
+
+@keyframes ticker-scroll {
+    to { transform: translateX(-50%); }
+}
+
+/* Readable content beats animation: hold still while it is being read. */
+.ticker:hover .ticker__track,
+.ticker:focus-within .ticker__track,
+.ticker.is-paused .ticker__track {
+    animation-play-state: paused;
+}
+
+.ticker__item {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    white-space: nowrap;
+}
+
+/* The separator carries its own spacing, so the seam between the two halves
+   of the track measures the same as any other gap. */
+.ticker__item::after {
+    margin-left: var(--space-6);
+    color: var(--color-accent);
+    content: '\2022';
+}
+
+.ticker__link {
+    color: #fff;
+    font-weight: 600;
+}
+
+.ticker__link:hover,
+.ticker__link:focus-visible {
+    color: var(--color-accent-light);
+}
+
+.ticker__date {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: var(--fs-xs);
+}
+
+.ticker__all {
+    flex-shrink: 0;
+    color: var(--color-accent-light);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.ticker__all:hover {
+    color: #fff;
+}
+
+/* Hidden until the script confirms there is something to pause. */
+.ticker__toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+    color: #fff;
+    transition: border-color var(--transition), color var(--transition);
+}
+
+.ticker.is-ready .ticker__toggle {
+    display: inline-flex;
+}
+
+.ticker__toggle:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent-light);
+}
+
+.ticker__icon {
+    width: 14px;
+    height: 14px;
+}
+
+.ticker__icon--play,
+.ticker__toggle[aria-pressed='true'] .ticker__icon--pause {
+    display: none;
+}
+
+.ticker__toggle[aria-pressed='true'] .ticker__icon--play {
+    display: block;
 }
 
 /* --- Cards --- */
@@ -3231,6 +3398,12 @@ a.notice-nav__item:hover {
         width: 40px;
         height: 40px;
     }
+
+    /* The ticker is three parts fighting for one 320px row: dates drop out
+       first, and the pill shortens to a word at 480px below. */
+    .ticker__date {
+        display: none;
+    }
 }
 
 /* Phones at 320-420px: vertical rhythm tightens a further step. Headings are
@@ -3290,6 +3463,11 @@ a.notice-nav__item:hover {
         max-width: none;
         bottom: calc(var(--space-4) + 52px);
     }
+
+    .ticker__label-pre,
+    .ticker__all {
+        display: none;
+    }
 }
 
 /* Respect the OS setting - no animation for users who asked for none */
@@ -3305,6 +3483,25 @@ a.notice-nav__item:hover {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
+
+    /* One iteration would freeze the track half-scrolled. Stop it outright and
+       hand the strip back to the visitor as a plain sideways scroller. */
+    .ticker.is-ready .ticker__track {
+        animation: none !important;
+    }
+
+    .ticker.is-ready .ticker__viewport {
+        overflow-x: auto;
+    }
+
+    .ticker__pulse {
+        animation: none;
+    }
+
+    /* Nothing to pause once the scroll is off. */
+    .ticker__toggle {
+        display: none !important;
+    }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -3312,6 +3509,7 @@ a.notice-nav__item:hover {
 @media print {
     .topbar,
     .header,
+    .ticker,
     .footer,
     .back-to-top,
     .nav-toggle {

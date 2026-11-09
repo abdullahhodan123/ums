@@ -58,8 +58,18 @@ the table below as a placeholder rather than a credit.
 They are used at 21:10 (`4:3` under 768px) with `object-fit: cover`, so the
 displayed crop differs from the original file in every case.
 
+## Member of Parliament portrait
+
+`local_MP.png` was supplied with the project rather than sourced by it. Its
+licence and origin have not been recorded — fill this in before the site goes
+public. It is used for the Lakshmipur-3 entry in the homepage leadership
+carousel.
+
 ## Not photographs
 
 - `hero-pattern.svg` — original vector pattern, project-owned.
 - `favicon.svg` — original mark, project-owned.
 - `hero.png`, `logo.jpeg`, `edu_mis.jpeg` — project assets.
+- `logo.png` — `logo.jpeg` with the flat grey backdrop keyed out, so the crest
+  sits directly on the header and footer colours. `logo.jpeg` is kept as the
+  full-resolution original.

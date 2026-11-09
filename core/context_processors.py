@@ -8,6 +8,8 @@ having to pass it through.
 
 from django.urls import reverse
 
+from notice.models import Notice
+
 # ---------------------------------------------------------------------------
 # Navigation
 #
@@ -89,4 +91,28 @@ def site_info(request):
         'SITE_EMAIL': 'info@lst.ac.bd',
         'SITE_ADDRESS': 'Lakshmipur Science and Technology, University Road, Lakshmipur',
         'SITE_NAV': SITE_NAV,
+    }
+
+
+# Notices scrolling past in the ticker under the header. Long titles are
+# repeated by the ticker script, so a handful of rows fills any screen width.
+TICKER_NOTICE_COUNT = 8
+
+
+def ticker_notices(request):
+    """Latest published notices for the ticker, on every page that renders it.
+
+    The admin is skipped because its templates never include the ticker and it
+    is the one place where an extra query per request would be noticed.
+    """
+    match = getattr(request, 'resolver_match', None)
+    if match is not None and match.app_name == 'admin':
+        return {}
+
+    return {
+        'TICKER_NOTICES': (
+            Notice.objects.published()
+            .only('title', 'slug', 'published_date', 'is_pinned')
+            .board_order()[:TICKER_NOTICE_COUNT]
+        )
     }

@@ -1,0 +1,46 @@
+{% comment %}
+Notice ticker, the strip directly under the header.
+
+TICKER_NOTICES comes from core.context_processors.ticker_notices, so every
+page gets the same list without a view passing it. The markup ships one run
+of items; main.js duplicates it into two identical halves to scroll seamlessly
+and reveals the pause control. Without JavaScript the row still works - the
+viewport scrolls sideways instead of animating.
+{% endcomment %}
+{% if TICKER_NOTICES %}
+<div class="ticker" data-ticker>
+    <div class="container ticker__inner">
+        <span class="ticker__label">
+            <span class="ticker__pulse" aria-hidden="true"></span>
+            <span class="ticker__label-pre">Latest </span>notices
+        </span>
+
+        <div class="ticker__viewport" data-ticker-viewport>
+            <div class="ticker__track" data-ticker-track>
+                <ul class="ticker__group" data-ticker-group>
+                    {% for notice in TICKER_NOTICES %}
+                    <li class="ticker__item">
+                        <a class="ticker__link" href="{{ notice.get_absolute_url }}">{{ notice.title }}</a>
+                        <span class="ticker__date">{{ notice.published_date|date:"j M Y" }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <a class="ticker__all" href="{% url 'notice:notice_list' %}">All notices <span aria-hidden="true">&rsaquo;</span></a>
+
+        <button type="button" class="ticker__toggle" data-ticker-toggle aria-pressed="false" hidden>
+            <svg class="ticker__icon ticker__icon--pause" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M9 5v14M15 5v14" />
+            </svg>
+            <svg class="ticker__icon ticker__icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+            <span class="visually-hidden" data-ticker-toggle-label>Pause the notice ticker</span>
+        </button>
+    </div>
+</div>
+{% endif %}

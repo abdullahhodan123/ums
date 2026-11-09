@@ -735,6 +735,108 @@
         });
     }
 
+    /* ----------------------------------------------------------------------
+       Notice ticker
+       The template sends one run of notices. A seamless loop needs the track
+       to be exactly two identical halves, so the run is repeated until it
+       fills the viewport, then copied whole and scrolled by -50%.
+       Every clone is muted (aria-hidden, tabindex=-1) so the duplicated links
+       are never announced or reached by keyboard.
+       ---------------------------------------------------------------------- */
+    var TICKER_SPEED = 70; /* pixels per second */
+
+    function initTicker() {
+        var ticker = document.querySelector('[data-ticker]');
+
+        if (!ticker) {
+            return;
+        }
+
+        var track = ticker.querySelector('[data-ticker-track]');
+        var group = ticker.querySelector('[data-ticker-group]');
+        var viewport = ticker.querySelector('[data-ticker-viewport]');
+        var toggle = ticker.querySelector('[data-ticker-toggle]');
+
+        if (!track || !group || !viewport || !group.children.length) {
+            return;
+        }
+
+        var originals = Array.prototype.slice.call(group.children);
+
+        function mute(node) {
+            node.setAttribute('aria-hidden', 'true');
+            Array.prototype.forEach.call(node.querySelectorAll('a, button'), function (el) {
+                el.setAttribute('tabindex', '-1');
+            });
+        }
+
+        function build() {
+            /* Rewind to the single run the server rendered. */
+            while (track.children.length > 1) {
+                track.removeChild(track.lastElementChild);
+            }
+            while (group.children.length > originals.length) {
+                group.removeChild(group.lastElementChild);
+            }
+
+            var room = viewport.clientWidth;
+
+            if (room > 0) {
+                var half = group.offsetWidth;
+                var guard = 0;
+
+                /* A few short titles may not reach the far edge of the bar;
+                   repeat them until the half covers it, or the loop would
+                   show a gap on every turn. */
+                while (half < room && guard < 40) {
+                    originals.forEach(function (item) {
+                        var clone = item.cloneNode(true);
+                        mute(clone);
+                        group.appendChild(clone);
+                    });
+                    half = group.offsetWidth;
+                    guard += 1;
+                }
+
+                var copy = group.cloneNode(true);
+                mute(copy);
+                track.appendChild(copy);
+
+                track.style.setProperty('--ticker-duration', (half / TICKER_SPEED).toFixed(1) + 's');
+                ticker.classList.add('is-ready');
+            }
+
+            if (toggle) {
+                toggle.hidden = false;
+            }
+        }
+
+        build();
+
+        var resizeTimer = null;
+        window.addEventListener('resize', function () {
+            window.clearTimeout(resizeTimer);
+            resizeTimer = window.setTimeout(build, 200);
+        });
+
+        if (!toggle) {
+            return;
+        }
+
+        var label = toggle.querySelector('[data-ticker-toggle-label]');
+
+        toggle.addEventListener('click', function () {
+            var paused = ticker.classList.toggle('is-paused');
+            toggle.setAttribute('aria-pressed', String(paused));
+
+            if (label) {
+                label.textContent = paused
+                    ? 'Resume the notice ticker'
+                    : 'Pause the notice ticker';
+            }
+        });
+    }
+
     /* ---------------------------------------------------------------------- */
 
     function init() {
@@ -747,6 +849,7 @@
         initCounters();
         initBackToTop();
         initDevNotice();
+        initTicker();
     }
 
     if (document.readyState === 'loading') {

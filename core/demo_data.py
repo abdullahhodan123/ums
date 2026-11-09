@@ -380,15 +380,20 @@ VICE_CHANCELLOR = {
 }
 
 # --- Leadership messages -----------------------------------------------------
-# This is a demonstration site. The people, offices and statements below are
-# fictional and must not be read as the words of any real person or office.
-# The Chancellor is shown as the President of Bangladesh holding the
+# This is a demonstration site. Most of the people, offices and statements
+# below are fictional and must not be read as the words of any real person or
+# office. The Chancellor is shown as the President of Bangladesh holding the
 # cancellership, which is the constitutional pattern for public universities in
 # the country; the officeholder is deliberately left unnamed. The Education
-# Minister sits second, between the Chancellor and the Vice-Chancellor - the
-# order the homepage carousel walks through. Portraits live in static/img/ -
-# chancellor.jpg and edu_mis.jpeg are official photographs, vice-chancellor.jpg
-# is placeholder artwork pending a real one.
+# Minister sits second, between the Chancellor and the Member of Parliament for
+# Lakshmipur-3, and the Vice-Chancellor closes the carousel - the order the
+# homepage walks through.
+#
+# The Lakshmipur-3 entry names a real member of parliament: his statement here
+# is placeholder text to be replaced with his own words. The portrait is
+# local_MP.png, supplied with the project. chancellor.jpg and edu_mis.jpeg are
+# official photographs; vice-chancellor.jpg is placeholder artwork pending a
+# real one.
 LEADERS = [
     {
         'name': 'His Excellency the President',
@@ -429,6 +434,31 @@ LEADERS = [
             'measures - classrooms filled, degrees examined honestly, research '
             'that leaves the campus - and those are the measures this university '
             'ought to be asked about, by students and by the country alike.'
+        ),
+    },
+    {
+        'name': 'Md. Shahiduddin Chowdhury Anee',
+        'role': 'Minister of Water Resources',
+        'office': (
+            'Honorable Minister of Water Resources and Joint Secretary '
+            'General, Bangladesh Nationalist Party; Member of Parliament, '
+            'Lakshmipur-3'
+        ),
+        'portrait': 'img/local_MP.png',
+        'alt': 'Portrait of Md. Shahiduddin Chowdhury Anee, Member of Parliament for Lakshmipur-3',
+
+        # Placeholder text in his voice - to be replaced with his own words.
+        'message': (
+            'Lakshmipur is a district shaped by water: the Meghna at one edge, '
+            'the canals and beels within, and the seasonal work of living with '
+            'both. That is why the education this university offers must be a '
+            'practical one - science a graduate can carry into the fields, the '
+            'embankments, the clinics and the small industries of this region. '
+            'I would like this institution to keep the scale it has chosen: '
+            'known to its students, examined honestly, and answerable to the '
+            'families who send their children here. When a young person from '
+            'Lakshmipur leaves this campus with a real skill, the district '
+            'gains something it cannot import.'
         ),
     },
     # Copied rather than retyped, so the carousel quote and the page speech are
